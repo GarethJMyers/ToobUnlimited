@@ -21,6 +21,7 @@
 # they do.
 
 import random as rd
+import os
 
 
 class StationNameGenerator:
@@ -28,8 +29,28 @@ class StationNameGenerator:
         """
         :param user_seed: The global seed provided by the software user. If it is less than 12
         digits long, it is concatenated until it is at least 12 digits long.
-        :param list_paths: a dictionary of
+        :param list_paths: A dictionary of filepaths containing name parts. Must contain the keys
+        "prefix", "former", "latter", "suffix". All other keys are ignored.
         """
+        # check arguments
+        python_path = os.environ['PYTHONPATH'].split(os.pathsep)
+        path_keys = [*list_paths]
+        required_keys = ["prefix", "former", "latter", "suffix"]
+        if not all([i in path_keys for i in required_keys]):
+            raise ValueError("The dictionary of filepaths of part lists for a StationNameGenerator " +
+                           "have keys including 'prefix', 'former', 'latter', and 'suffix'.")
+        self.name_parts = {}
+        for i in required_keys:
+            new_name_list = []
+            try:
+                with open(list_paths[i], "r") as f:
+                    for fline in f:
+                        new_name_list.append(fline)
+            except OSError:
+                raise ValueError("The name parts list file with the key '" + i + "' was not a " +
+                                 "valid file.")
+            self.name_parts[i] = new_name_list
+
         # make user seed at least 12 digits long
         seed_checked = False
         long_seed = user_seed
