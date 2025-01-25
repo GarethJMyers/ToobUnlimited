@@ -175,6 +175,7 @@ class StationNameGenerator:
         ]
         latters = []
         suffixes = []
+        former_num = 0
         for i, j, k in zip(use_prefix, use_latter_suffix, use_double_letters):
             if i:
                 prefixes.append(
@@ -198,9 +199,11 @@ class StationNameGenerator:
                                      "should be?!?")
 
             if use_latter:
-                latters.append(
-                    rngenerator.choice(self.name_parts["latter"])[0]
-                )
+                chosen_latter = rngenerator.choice(self.name_parts["latter"])[0]
+                if (not k) and (chosen_latter[0] == formers[former_num][-1]):
+                    latters.append(chosen_latter[1:-1])
+                else:
+                    latters.append(chosen_latter)
             else:
                 latters.append(None)
             if use_suffix:
@@ -209,6 +212,7 @@ class StationNameGenerator:
                 )
             else:
                 suffixes.append(None)
+            former_num += 1
 
         return [
             _construct_station_name(i, j, k, m) for i, j, k, m in zip(
