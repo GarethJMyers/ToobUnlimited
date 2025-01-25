@@ -29,6 +29,9 @@ import random as rd
 import typing as ty
 import src.utils
 
+# letters that aren't allowed to be double letters
+_non_double_letters = ["a", "h", "i", "j", "q", "u", "v", "w", "x", "y"]
+
 
 def _construct_station_name(prefix: ty.Optional[str], former: str, latter: ty.Optional[str],
                              suffix: ty.Optional[str]) -> str:
@@ -200,7 +203,8 @@ class StationNameGenerator:
 
             if use_latter:
                 chosen_latter = rngenerator.choice(self.name_parts["latter"])[0]
-                if (not k) and (chosen_latter[0] == formers[former_num][-1]):
+                if ((not k) or (chosen_latter[0] in _non_double_letters)) \
+                        and (chosen_latter[0] == formers[former_num][-1]):
                     latters.append(chosen_latter[1:-1])
                 else:
                     latters.append(chosen_latter)
