@@ -97,9 +97,9 @@ class StationNameGenerator:
             0.2  # yes prefix
         )
         self.nameshape_weights_latter_suffix = (
-            0.8,  # just latter
-            0.15,  # latter + suffix
-            0.05  # just suffix
+            0.85,  # just latter
+            0.14,  # latter + suffix
+            0.01  # just suffix
         )
         self.nameshape_weights_double_letter = (
             0.5, # yes double letter allowed

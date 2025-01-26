@@ -12,7 +12,7 @@
 #
 
 import weakref as wr
-from NetworkLine import NetworkLine
+from src.Network.NetworkLine import NetworkLine
 
 
 class NetworkStation:
